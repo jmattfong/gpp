@@ -35,7 +35,7 @@ object Gpp {
         // handle method option
         opts.method() match {
             case "majority" => Majority(trainFiles, evalFiles, opts.detailed())
-            case "lexicon" =>
+            case "lexicon" => Lexicon(evalFiles, opts.detailed())
             case _ =>
         }
     }
