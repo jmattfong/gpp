@@ -5,7 +5,7 @@ import scala.xml.Elem
 
 object Majority {
 
-    def appy(train: List[Elem], eval: List[Elem], detailed: Boolean) {
+    def apply(train: List[Elem], eval: List[Elem], detailed: Boolean) {
         val trainLabels = (for(file <- train)
             yield (file \\ "item").map(item => (item \ "@label").text).toList
         ).flatten
@@ -15,5 +15,7 @@ object Majority {
         
         val majorityLabel = trainLabels.groupBy(x=>x).mapValues(_.length).toList.sortBy(-_._2).head._1
         println(majorityLabel)
+        
+        
     }
 }
