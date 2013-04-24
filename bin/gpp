@@ -40,7 +40,7 @@ CLASS=
 
 case $CMD in
     run) CLASS=$1; shift;;
-    exp) CLASS=gpp.exp.Gpp; shift;;
+    exp) CLASS=gpp.exp.Gpp;;
     help) help; exit 1;;
     *) echo "Unrecognized command: $CMD"; help; exit 1;;
 esac
