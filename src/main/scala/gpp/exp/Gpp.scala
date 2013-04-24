@@ -38,9 +38,15 @@ object Gpp {
             case "lexicon" =>
             case _ =>
         }
+        
+        val labels = trainFiles.foreach(file => {
+            (file \\ "item").map { item => println((item \ "@label").text) }
+        })
+        val text = (for(file <- trainFiles){
+            yield (file \\ "content").map(_.text).toList
+        })
     }
 }
-
 
 /**
  * An object that sets of the configuration for command-line options using
