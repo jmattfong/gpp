@@ -15,14 +15,14 @@ object ConvertStanford {
                 case _   => "positive"
             }
             parts(0) = label
-            print("<item ")
+            print("  <item ")
             val itemLabels = (for((s, i) <- labels.zipWithIndex) yield {
                 if(i != 2)
-                    print(s + "=\"" + parts(i) + "\" ")
+                    print(s + "=\"" + parts(i).replaceAll("\"", "") + "\" ")
             })
             println(">")
-            println("<content>" + parts(5) + "</content>")
-            println("</item>")
+            println("    <content>" + parts(5) + "</content>")
+            println("  </item>")
             
         }
         println("</dataset>")
