@@ -32,6 +32,7 @@ gpp 0.1 commands:
 
   run              run the main method of a given class
   exp              run the main method of class gpp.exp.Gpp
+  convert-stanford run the main method of class gpp.exp.ConvertStanford
 
 Include --help with any option for more information
 EOF
@@ -42,6 +43,7 @@ CLASS=
 case $CMD in
     run) CLASS=$1; shift;;
     exp) CLASS=gpp.exp.Gpp;;
+    convert-stanford) CLASS=gpp.exp.ConvertStanford;;
     help) help; exit 1;;
     *) echo "Unrecognized command: $CMD"; help; exit 1;;
 esac
