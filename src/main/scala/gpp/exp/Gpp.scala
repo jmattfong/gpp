@@ -34,17 +34,10 @@ object Gpp {
         
         // handle method option
         opts.method() match {
-            case "majority" =>
+            case "majority" => Majority(trainFiles, evalFiles, opts.detailed())
             case "lexicon" =>
             case _ =>
         }
-        
-        val labels = trainFiles.foreach(file => {
-            (file \\ "item").map { item => println((item \ "@label").text) }
-        })
-        val text = (for(file <- trainFiles){
-            yield (file \\ "content").map(_.text).toList
-        })
     }
 }
 
