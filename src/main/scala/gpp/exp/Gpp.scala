@@ -1,17 +1,68 @@
 package gpp.exp
 
+import org.apache.log4j.Level
+import org.apache.log4j.Logger
+import nak.util.ConfusionMatrix
+import scala.xml.XML
+
+
 object Gpp {
 
     def main(args: Array[String]) {
+        // parse options and automatically handle help option
         val opts = GppOpts(args)
+        
+        // handle version option
+        if(opts.version()){
+            println("Gpp version 0.1")
+            exit(0)
+        }
+        
+        // handle verbose option
+        val logLevel = if (opts.verbose()) Level.DEBUG else Level.INFO
+        Logger.getRootLogger.setLevel(logLevel)
+        
+        // handle train option
+        val trainFiles = opts.train().map(XML.loadFile)
+        // handle eval option
+        val evalFiles = opts.eval().map(XML.loadFile)
+        
+        // not handled yet!!!!!!!!
+        opts.cost()
+        opts.detailed()
+        opts.extended()
+        
+        // handle method option
+        opts.method() match {
+            case "majority" =>
+            case "lexicon" =>
+            case _ =>
+        }
     }
-  
 }
 
 
 /**
  * An object that sets of the configuration for command-line options using
  * Scallop and returns the options, ready for use.
+ * 
+ * Classification application.
+ * 
+ * For usage see below:
+ * 
+ *   -c, --cost  <arg>       The cost parameter C. Bigger values means less
+ *                           regularization (more fidelity to the training set).
+ *                           (default = 1.0)
+ *   -d, --detailed          
+ *   -e, --eval  <arg>...    The files containing evalualation events.
+ *   -x, --extended          Use extended features.
+ *   -m, --method  <arg>     The type of solver to use. Possible values: majority,
+ *                           lexicon, or any liblinear solver type.
+ *                           (default = L2R_LR)
+ *   -t, --train  <arg>...   The files containing training events.
+ *   -v, --verbose           
+ *       --help              Show this message
+ *       --version           Show version of this program
  */
 object GppOpts {
 

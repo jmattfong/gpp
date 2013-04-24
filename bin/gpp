@@ -31,6 +31,7 @@ cat <<EOF
 gpp 0.1 commands: 
 
   run              run the main method of a given class
+  exp              run the main method of class gpp.exp.Gpp
 
 Include --help with any option for more information
 EOF
