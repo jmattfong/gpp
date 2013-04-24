@@ -38,12 +38,14 @@ object Supervised {
 
         lazy val extendedFeaturizer = new Featurizer[String, String] {
             def apply(input: String) = {
-                val tokens = Twokenize(input).map(_.toLowerCase).map(stemmer(_))
+                val originalTokens = Twokenize(input)
+                val tokens = originalTokens.map(_.toLowerCase).map(stemmer(_))
                 val wordCounts = tokens.groupBy(x=>x).mapValues(_.length).toList
                 val basicFeatures = for ((word, count) <- wordCounts)
                     yield FeatureObservation(word+"="+count)
                 val polarity = List(FeatureObservation("polarity="+getSentiment(input)))
-                (basicFeatures ++ polarity)
+                val emoticon = List(FeatureObservation("emoticon="+getEmoticon(originalTokens)))
+                (basicFeatures ++ polarity ++ emoticon)
             }
         }
 
@@ -73,5 +75,17 @@ object Supervised {
             case 1 => "negative"
             case 2 => "neutral"
         }
+    }
+
+    def getEmoticon(tokens: List[String]): String = {
+        val emoticonRE = """(:|;|8|\)|\(|\]|\[|D|d|P|p|O|o|\||>|<)+"""
+        val charRE = """[DdPpOo]""".r
+
+        for (token <- tokens)
+            if (token.matches(emoticonRE) && token.length > 1 && charRE.findAllIn(token).length < 2 && token != "O:") {
+                return token
+            }
+
+        return ""
     }
 }
