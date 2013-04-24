@@ -27,15 +27,11 @@ object Gpp {
         // handle eval option
         val evalFiles = opts.eval().map(XML.loadFile)
         
-        // not handled yet!!!!!!!!
-        opts.cost()
-        opts.detailed()
-        opts.extended()
-        
         // handle method option
         opts.method() match {
             case "majority" => Majority(trainFiles, evalFiles, opts.detailed())
             case "lexicon" => Lexicon(evalFiles, opts.detailed())
+            case "L2R_LR" => Supervised(trainFiles, evalFiles, opts.cost(), opts.detailed())
             case _ =>
         }
     }
