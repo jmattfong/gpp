@@ -39,9 +39,11 @@ object Supervised {
         lazy val extendedFeaturizer = new Featurizer[String, String] {
             def apply(input: String) = {
                 val tokens = Twokenize(input).map(_.toLowerCase).map(stemmer(_))
-                val features = tokens.groupBy(x=>x).mapValues(_.length).toList
-                for ((word, count) <- features)
+                val wordCounts = tokens.groupBy(x=>x).mapValues(_.length).toList
+                val basicFeatures = for ((word, count) <- wordCounts)
                     yield FeatureObservation(word+"="+count)
+                val polarity = List(FeatureObservation("polarity="+getSentiment(input)))
+                (basicFeatures ++ polarity)
             }
         }
 
@@ -61,5 +63,15 @@ object Supervised {
         println(cm)
         if(detailed)
             println(cm.detailedOutput)
+    }
+
+    def getSentiment(text: String): String = {
+        val tokens = Twokenize(text)
+        val polarity = English.getPolarity(tokens)
+        return polarity match {
+            case 0 => "positive"
+            case 1 => "negative"
+            case 2 => "neutral"
+        }
     }
 }
