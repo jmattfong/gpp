@@ -21,5 +21,6 @@ libraryDependencies ++= Seq(
   "org.scalanlp" % "chalk" % "1.1.3-SNAPSHOT",
   "org.rogach" %% "scallop" % "0.8.1",
   "org.clapper" % "argot_2.9.1" % "0.3.8",
-  "gov.nist.math" % "jama" % "1.0.2" 
+  "gov.nist.math" % "jama" % "1.0.2",
+  "de.bwaldvogel" % "liblinear" % "1.92"
 )
