@@ -27,15 +27,15 @@ print len(ys), len(ys2), len(xs), len(xs2)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-rects1 = ax.bar(ind, ys, width, color='red')
-rects2 = ax.bar(ind+width, ys2, width, color='blue')
+rects1 = ax.bar(ind, ys[::-1], width, color='red')
+rects2 = ax.bar(ind+width, ys2[::-1], width, color='blue')
 
-ax.set_xlabel('Feature')
+ax.set_xlabel('Number of Days (N)')
 ax.set_ylabel('Performance')
-ax.set_title('Classifier Accuracy Predicting Stock with Single Features')
+ax.set_title('Classifier Accuracy Predicting Stock Return After N Days')
 ax.set_xticks(ind + width)
-ax.set_xticklabels(xs)
-ax.legend((rects1[0], rects2[0]), ('Full', 'Snippets'))
+ax.set_xticklabels(xs[::-1])
+ax.legend((rects1[0], rects2[0]), ('Full', 'Snippets'), loc='upper left')
 
 def autolabel(rects):
     # attach some text labels
