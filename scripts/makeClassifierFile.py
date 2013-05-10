@@ -35,7 +35,7 @@ def removeTags(text, openTag, closeTag):
 def cleanText(text):
     return ' '.join(removeTags(removeTags(text, '<', '>'), '{', '}').replace("&", "and").split())
 
-def writeClassifier(jsonData, fileName):
+def writeClassifier(jsonData, fileName, useRawLabel):
     f = open(fileName, 'w')
     f.write("<dataset>\n")
 
@@ -43,7 +43,8 @@ def writeClassifier(jsonData, fileName):
     for article in jsonData.keys():
         articleReturn = jsonData[article]
         articleText = cleanText(article.strip().encode('utf8'))
-        f.write('\t<item label="' + getLabel(articleReturn) + '">\n')
+        label = str(articleReturn) if useRawLabel else getLabel(articleReturn)
+        f.write('\t<item label="' + label + '">\n')
         f.write("\t\t<content>" + articleText + "</content>\n")
         f.write("\t</item>\n")
 
@@ -71,8 +72,9 @@ inputFile = sys.argv[1]
 trainFile = sys.argv[2]
 testFile = sys.argv[3]
 testPercentage = float(sys.argv[4])
+raw = (len(sys.argv) > 5 and (sys.argv[5] == "1" or sys.argv[5].lower == "true"))
 
 jsonData = getJSON(inputFile)
 trainData, testData = splitData(jsonData, testPercentage)
-writeClassifier(trainData, trainFile)
-writeClassifier(testData, testFile)
+writeClassifier(trainData, trainFile, raw)
+writeClassifier(testData, testFile, raw)

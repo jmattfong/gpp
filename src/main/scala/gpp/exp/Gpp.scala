@@ -33,6 +33,7 @@ object Gpp {
             case "lexicon" => Lexicon(evalFiles, opts.detailed())
             case "L2R_LR" => Supervised(trainFiles, evalFiles, opts.cost(), opts.extended(), opts.detailed())
             case "business" => Business(trainFiles, evalFiles, opts.cost(), opts.detailed())
+            case "word" => WordRelevance(trainFiles, evalFiles)
             case _ =>
         }
     }
