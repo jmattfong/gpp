@@ -315,34 +315,48 @@ object TWSSModel {
 object CompanyData {
     import gpp.exp.AlphaNumericTokenizer
     import scala.collection.mutable
+    import com.github.tototoshi.csv._
+    import java.io.File
 
     lazy val resourceDir = "/companies/"
 
-    /**
-     * Parses simple csv files with format: SYMBOL,"COMPANY NAME"
-     * @param filename the name of the resource file
-     * @return A Map[String, String] that maps stock symbols to company names
-     */
-    def getCompData(filename: String): Map[String, String] =
-        Resource.asSource(resourceDir+filename)
-            .getLines
-            .map(l => {
-                val parts = l.split(",", 2)
-                (parts(0), parts(1).replaceAll("\"", ""))
-            }).toMap
-    
+    def readCSVFile(filename: String): (Map[String, Int], List[List[String]]) = {
+        val reader = CSVReader.open(new File("data/companies/" + filename))
+        val file = reader.all()
+        reader.close()
+        val header = file.head.zipWithIndex.toMap
+        val body = file.tail
+        (header, body)
+    }
+
+    def compMap(header: Map[String, Int], body: List[List[String]], key: String, valName: String): Map[String, String] = {
+        (for(line <- body) yield {
+            val k = line(header.getOrElse(key, 0))
+            val v = line(header.getOrElse(valName, 0))
+            (k, v)
+        }).toMap ++ List((key, key)).toMap
+    }
+
+    lazy val (amexHeader, amexFile) = readCSVFile("AMEX.csv")
+    lazy val (nasdaqHeader, nasdaqFile) = readCSVFile("NASDAQ.csv")
+    lazy val (nyseHeader, nyseFile) = readCSVFile("NYSE.csv")
+    lazy val header = nyseHeader // trust that they are all the same
+    lazy val file = amexFile ++ nasdaqFile ++ nyseFile
+
     // A map of stock symbols to company names
-    lazy val symToComp: mutable.Map[String, String] = mutable.Map() ++ getCompData("nasdaq.csv") ++ getCompData("nyse.csv")
+    lazy val symToComp: mutable.Map[String, String] = mutable.Map() ++ compMap(header, file, "Symbol", "Name")
     // A map that takes a word to a list of stock symbols with that word in their
     // corresponding company's name
     lazy val invertedIndex: mutable.Map[String, Set[String]] = mutable.Map() ++
         (for ((sym, comp) <- symToComp) yield {
-            val symMap = (sym.toLowerCase, sym)
+            val fixedSymbol = sym.split("\\^")(0).split("/")(0).trim()
+            val symMap = List((fixedSymbol.toLowerCase, fixedSymbol))
             val splitCompName = AlphaNumericTokenizer(comp)
-            (for (word <- splitCompName) yield (word.toLowerCase(), sym.trim())) ++ List(symMap)
+            (for (word <- splitCompName) yield (word.toLowerCase(), fixedSymbol)) ++ symMap
         }).flatten
         .groupBy(_._1)
         .mapValues(_.map(_._2).toSet)
+        .filter(_._2.size < 100)
         .toMap
 
     /**
