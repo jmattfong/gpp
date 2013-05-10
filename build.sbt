@@ -17,10 +17,12 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.scalanlp" % "nak" % "1.1.2",
+  "org.scalanlp" % "nak" % "1.1.3-SNAPSHOT",
   "org.scalanlp" % "chalk" % "1.1.3-SNAPSHOT",
   "org.rogach" %% "scallop" % "0.8.1",
   "org.clapper" % "argot_2.9.1" % "0.3.8",
   "gov.nist.math" % "jama" % "1.0.2",
-  "de.bwaldvogel" % "liblinear" % "1.92"
+  "de.bwaldvogel" % "liblinear" % "1.92",
+  "net.sf.supercsv" % "super-csv" % "2.0.1",
+  "com.github.tototoshi" %% "scala-csv" % "0.8.0"
 )
