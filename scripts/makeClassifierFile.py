@@ -10,16 +10,12 @@ def getJSON(fileName):
     return jsonData
 
 def getLabel(articleReturn):
-    if articleReturn > 0.05:
-        return "Really Good"
-    elif articleReturn > 0.01:
+    if articleReturn > 0.005:
         return "Good"
-    elif articleReturn > -0.01:
+    elif articleReturn > -0.005:
         return "OK"
-    elif articleReturn > -0.05:
-        return "Bad"
     else:
-        return "Really Bad"
+        return "Bad"
 
 def removeTags(text, openTag, closeTag):
     flag = True

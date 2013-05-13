@@ -1,9 +1,15 @@
-### GPP
+### CS388 Final Project
 
 ## What is it?
 
-This is a shell repository for code to create classifiers for polarity classification for tweets. The instructions may be found in [the description of homework five](https://github.com/utcompling/applied-nlp/wiki/Homework5) for the [@appliednlp](http://twitter.com/appliednlp) course.
+This the final project for CS388 (Natural Language Processing) by Hassaan Markhiani and Matt Fong. It attempts to predict the return of a stock based on news articles.
 
-## Why is it?
+## To run:
 
-Some people on the internet seem to have [Genuine People Personalities](http://hitchhikers.wikia.com/wiki/Genuine_People_Personalities) and they express those personalities in social media posts. Let's develop programs that see if they are feeling [positive](https://en.wikipedia.org/wiki/Technology_in_The_Hitchhiker%27s_Guide_to_the_Galaxy#Happy_Vertical_People_Transporter) or [negative](http://hitchhikers.wikia.com/wiki/Marvin)---after all, it might be useful for [complaints departments](http://hitchhikers.wikia.com/wiki/Sirius_Cybernetcs_Corperation_Complaints_Department).
+First, build the project:
+
+    ./build package
+    
+Then, run:
+
+    ./bin/gpp exp --train data/nytimes/up_down_articles_full_1day_train.xml --eval data/nytimes/up_down_articles_full_1day_test.xml --cost 0.1

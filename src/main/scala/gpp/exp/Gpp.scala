@@ -76,7 +76,7 @@ For usage see below:
     val detailed = opt[Boolean]("detailed", short='d')
     val eval = opt[List[String]]("eval", short='e', descr="The files containing evalualation events.")
     val extended = opt[Boolean]("extended", short='x', default=Some(false), descr="Use extended features.")
-    val method = opt[String]("method", short='m', default=Some("L2R_LR"), descr="The type of solver to use. Possible values: majority, lexicon, or any liblinear solver type.")
+    val method = opt[String]("method", short='m', default=Some("business"), descr="The type of solver to use. Possible values: majority, lexicon, or any liblinear solver type.")
     val train = opt[List[String]]("train", short='t', descr="The files containing training events.")
     val verbose = opt[Boolean]("verbose", short='v', default=Some(false))
     val help = opt[Boolean]("help", noshort=true, descr="Show this message")

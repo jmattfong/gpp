@@ -48,7 +48,7 @@ object AlphaNumericTokenizer {
    * @return A List[String] with one token per element.
    */
 	def apply(text: String): List[String] = text
-		.replaceAll("[^a-zA-Z0-9]+", " ")
+		.replaceAll("[^a-zA-Z0-9']+", " ")
 		.split(" ")
 		.filter(_.size > 0)
 		.toList
