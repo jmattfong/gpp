@@ -57,16 +57,12 @@ object WordRelevance {
 
     def getLabels(scores: List[Double]): List[String] = {
         val labels = for (score <- scores) yield {
-            if (score > 0.05)
-                "Really Good"
-            else if (score > 0.01)
+            if (score > 0.005)
                 "Good"
-            else if (score > -0.01)
+            else if (score > -0.005)
                 "OK"
-            else if (score > -0.05)
-                "Bad"
             else
-                "Really Bad"
+                "Bad"
         }
         labels
     }
